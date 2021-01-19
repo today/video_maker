@@ -1,0 +1,21 @@
+
+生成纯色视频
+ffmpeg -ss 0 -t 30  -f lavfi -i color=c=0x0000ff:s=1280x720:r=25 -vcodec libx264 -r:v 25 test.mp4
+
+
+图片转视频，单张图片
+ffmpeg -loop 1 -i pics/01.jpeg -pix_fmt yuv420p -vcodec libx264 -b:v 600k -preset medium -crf 30 -s 1920x1080 -vframes 250 -r 30 -t 3 a.mp4
+
+ffmpeg -loop 1 -i pics/01.jpeg -pix_fmt yuvj422p -vcodec libx264 -b:v 600k -preset medium -crf 30 -s 1920x1080 -vframes 250 -r 30 -t 3 a.mp4
+
+
+----vframes 250 是罪魁祸首 ------
+ffmpeg -loop 1 -t '55' -i pics/01.jpeg  -pix_fmt yuvj422p -vcodec libx264 -b:v 600k  -preset medium -crf 30 -s 1920x1080 -r 30  a.mp4
+
+
+合并文件列表里的视频
+ffmpeg -f concat -i video_list.txt -c copy output.mp4
+
+
+合并视频 和音频
+ffmpeg -i output.mp4 -i audio.mp3 -c:v copy -c:a aac -strict experimental final.mp4
